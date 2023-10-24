@@ -50,7 +50,7 @@ def inverse(tab):
 
 
 #nouvelle version fft direct 1D : 
-def direct(tab, w): 
+def direct(tab): 
     N = len(tab)
     if N <= 1:  #si N constant alors on retourne simplement le tableau  
         return tab
