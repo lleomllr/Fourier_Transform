@@ -47,3 +47,21 @@ def inverse(tab):
     #si nous ne sommes pas dans un appel initial mais récursif, les élements sont ajoutés sans normalisation
     else:
         return [(paires[k%(N//2)] + new_tab[k]) for k in range(N)]
+
+
+#nouvelle version fft direct 1D : 
+def direct(tab, w): 
+    N = len(tab)
+    if N <= 1:  #si N constant alors on retourne simplement le tableau  
+        return tab
+    else: 
+        paires = (tab[0:2])   #tableau pair partant de 0 (deux en deux)   
+        impaires = (tab[1:2]) #tableau impair partant de 1 (deux en deux) 
+
+        direct(paires)        #appels recursifs sur les indices des tabs pairs et impairs
+        direct(impaires)
+
+        for k in range(0, N//2): #parcours des indices des indices venant de l'appel recursif
+            new_tab =[cmath.exp((-2j * cmath.pi * k / N)) * impaires[k]] #application de la formule et multiplié par les impairs 
+            tab[k] = paires[k] + new_tab  
+            tab[N//2 + k] = paires[k] - new_tab
