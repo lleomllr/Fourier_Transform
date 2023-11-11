@@ -9,74 +9,73 @@ import TransformeeDeFourier.DFT1D as dft1d
 import TransformeeDeFourier.DFTD2D as dft2d
 import TransformeeDeFourier.FFT as fft
 import TransformeeDeFourier.FFT2D as FFT2D
-import copy
-import matplotlib.image as img
+
+import numpy as np
+import cmath
+import time
 import matplotlib.pyplot as plt
 from PIL import Image
-import cv2
-import numpy
 
-if __name__ == '__main__':
-    #transformée 1D direct
-    tab1DD = [12, 45,20,30,42,123,3841,123,43,219,4312,1232,76,24,87,996]  # exemple de tableau 1d
-    tab2DD = [[13, 5,980,20,3,23,341,63,78,29,432,932,778,36,70,1000],
-    [1, 5,2,3,42,23,31,13,43,19,412,122,7,4,8744,94296]]# exemple de tableau 2d
-    tab1DF = tab1DD.copy()
-    tab2DF = tab2DD.copy()
-    
-    tabFTD = dft1d.inverse(dft1d.direct(tab1DD))
-    tabFFT = fft.inverse(fft.direct(tab1DF))
-    
-    tabFTD2 = dft2d.inverse(dft2d.direct(tab2DD))
-    tabFFT2 = FFT2D.inverse(FFT2D.direct(tab2DF))
-    
-    for i in range(len(tabFTD)):
-        tabFTD[i]=round(tabFTD[i].real,2)+round(tabFTD[i].imag,2)*1j
-    
-    for i in range(len(tabFFT)):
-        tabFFT[i]=round(tabFFT[i].real,2)+round(tabFFT[i].imag,2)*1j
-    
-    for i in range(len(tabFTD2)):
-        for j in range(len(tabFTD2[0])):
-            tabFTD2[i][j]=round(tabFTD2[i][j].real,2)+round(tabFTD2[i][j].imag,2)*1j
+#Test de la Transformée discrète 1D directe et inverse
+"""
+adresse_image = '/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg'
+image = Image.open(adresse_image).convert('L')
+image_data = np.array(image)
 
-    for i in range(len(tabFFT2)):
-        for j in range(len(tabFFT2[0])):
-            tabFFT2[i][j]=round(tabFFT2[i][j].real,2)+round(tabFFT2[i][j].imag,2)*1j
-    
-    print("Transformée de Fourier 1D")
-    print(tabFTD)
-    print("Transformée de Fourier 1D rapide")
-    print(tabFFT)
-    print("Transformée de Fourier 2D")
-    print(tabFTD2)
-    print("Transformée de Fourier 2D rapide")
-    print(tabFFT2)   
-    
-    img = cv2.imread('calimero.jpg',0)
-    cv2.imshow('De Base',img)
-    imgArr = img.tolist()
-    
-    imgArr = FFT2D.direct(imgArr)
-    imgArrRealFFT2 = copy.deepcopy(imgArr)
-    
-    for i in range(len(imgArrRealFFT2)):
-        for j in range(len(imgArrRealFFT2[0])):
-            imgArrRealFFT2[i][j] = round(imgArrRealFFT2[i][j].real)
-    
-    
-    img = numpy.uint8(numpy.array(imgArrRealFFT2))
-    cv2.imshow('FFT2D', img)
-    
-    
-    imgArr = FFT2D.inverse(imgArr)
-    imgArrRealFFT2I = copy.deepcopy(imgArr)
-    
-    for i in range(len(imgArrRealFFT2I)):
-        for j in range(len(imgArrRealFFT2I[0])):
-            imgArrRealFFT2I[i][j] = round(imgArrRealFFT2I[i][j].real)
-            
-    img = numpy.uint8(numpy.array(imgArrRealFFT2I))
-    cv2.imshow('FFT2D Inverse', img)
-    
-    cv2.waitKey(0)
+plt.figure(figsize=(6, 6))
+plt.imshow(image_data, cmap='gray')
+plt.title('Image Originale')
+plt.show()
+
+resultat_dft = dft1d.direct(image_data[0])
+
+resultat_idft = dft1d.inverse(resultat_dft)
+
+magnitude_spectrum = [np.abs(freq) for freq in resultat_dft]
+plt.figure(figsize=(6, 6))
+plt.plot(magnitude_spectrum)
+plt.title('Magnitude Spectrum of DFT Result')
+plt.show()
+
+real_idft_resultat = [np.real(val) for val in resultat_idft]
+plt.figure(figsize=(6, 6))
+plt.plot(real_idft_resultat)
+plt.title('Résultat de la Transformée Inverse')
+plt.show()
+"""
+
+#Test de la Transformée de Fourier discrète 1D rapide directe et inverse 
+chemin = '/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg'
+image = Image.open(chemin)
+image_gris = image.convert('L')
+data = np.array(image_gris)
+
+debut = time.time()
+resultat_fft = [fft.direct(row.tolist()) for row in data]
+fin = time.time()
+
+start_time_ifft = time.time()
+ifft_resultat = [fft.inverse(row) for row in resultat_fft]
+end_time_ifft = time.time()
+
+temps_estime = fin - debut
+temps_ifft = end_time_ifft - start_time_ifft
+
+
+plt.figure(figsize=(12,6))
+plt.subplot(1, 3, 1)
+plt.title("Image Originale")
+plt.imshow(data, cmap='gray')
+
+plt.subplot(1, 3, 2)
+plt.title("Après FFT")
+plt.imshow(np.log(np.abs(resultat_fft) + 1), cmap='gray')
+
+plt.subplot(1, 3, 3)
+plt.title("Après IFFT")
+plt.imshow(np.real(ifft_resultat), cmap='gray')
+
+plt.show()
+
+print(f"Temps estimé pour la FFT : {temps_estime:.4f} seconds")
+print(f"Temps estimé pour la IFFT : {temps_estime:.4f} seconds")
