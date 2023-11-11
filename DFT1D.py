@@ -21,7 +21,7 @@ def direct(tab):
     #parcours de la matrice
     for m in range(0, N):
         for n in range(0, N):
-            new_tab[m] = new_tab[m] + tab[n] * cmath.exp((-2 * 1j * cmath.pi * m * n)/N);
+            new_tab[m] = new_tab[m] + tab[n] * cmath.exp(-2 * 1j * cmath.pi * m * n/N);
     return new_tab
 
 def inverse(tab):
@@ -36,5 +36,5 @@ def inverse(tab):
             #chaque terme de la somme est le produit d'un n terme et de la valeur exponentielle de la formule
             #Lorsqu'on prend la Transformée de Fourier Inverse, nous devons obtenir le signal original et non pas une version atténuée ou amplifiée,
             #c'est pourquoi nous divisons le tout par 1/N
-            new_tab[m] = new_tab[m] + (tab[n] * cmath.exp((2 * 1j * cmath.pi * m * n)/N))/N;
+            new_tab[m] = new_tab[m] + (tab[n] * cmath.exp(2 * 1j * cmath.pi * m * n/N))/N;
     return new_tab
