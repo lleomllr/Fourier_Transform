@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 #Test de la Transformée discrète 1D directe et inverse
-"""
+
 adresse_image = '/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg'
 image = Image.open(adresse_image).convert('L')
 image_data = np.array(image)
@@ -42,7 +42,8 @@ plt.figure(figsize=(6, 6))
 plt.plot(real_idft_resultat)
 plt.title('Résultat de la Transformée Inverse')
 plt.show()
-"""
+
+----------------------------------------------------------------------------------------------
 
 #Test de la Transformée de Fourier discrète 1D rapide directe et inverse 
 chemin = '/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg'
@@ -79,3 +80,21 @@ plt.show()
 
 print(f"Temps estimé pour la FFT : {temps_estime:.4f} seconds")
 print(f"Temps estimé pour la IFFT : {temps_estime:.4f} seconds")
+
+------------------------------------------------------------------------------------------------------------------
+
+#test de DFT2D directe et inverse
+image = Image.open('/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg').convert('L')
+pixels = np.array(image)
+
+resultat_dft2d = dft2d.direct(pixels)
+
+magnitude = np.abs(resultat_dft2d)
+
+resultat_idft2d = dft2d.inverse(resultat_dft2d)
+
+new_pixels = np.clip(np.real(resultat_idft2d), 0, 255).astype(np.uint8)
+
+new_imag = Image.fromarray(new_pixels)
+new_imag.show()
+
