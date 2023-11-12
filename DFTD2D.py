@@ -17,7 +17,7 @@ import TransformeeDeFourier.DFT1D as dft1d
 
 
 #%%Transformée de Fourier discrète 2D directe et inverse
-
+"""
 def transpose(tab):
     #initialisation du nombre de lignes et de colonnes de la matrice
     I = len(tab)
@@ -60,3 +60,39 @@ def inverse(tab):
         tab[i] = dft1d.inverse(tab[i])
     tab = transpose(tab)
     return tab
+"""
+
+def direct(tab):
+    N = len(tab)
+    M = len(tab[0]) if N > 0 else 0
+    
+    new_tab = [[0 for j in range(M)] for i in range(N)]
+    
+    for i in range(N):
+        new_tab[i] = dft1d.direct(tab[i])
+        
+    for j in range(M):
+        colonne = [new_tab[i][j] for i in range(N)]
+        transformee_col = dft1d.direct(colonne)
+        for i in  range(N):
+            new_tab[i][j] = transformee_col[i]
+    
+    return new_tab
+
+
+def inverse(tab):
+    N = len(tab)
+    M = len(tab[0]) if N > 0 else 0
+    
+    new_tab = [[0 for i in range(M)] for j in range(N)]
+    
+    for i in range(N):
+        new_tab[i] = dft1d.inverse(tab[i])
+        
+    for j in range(M):
+        colonne = [new_tab[i][j] for i in range(N)]
+        transformee_col = dft1d.inverse(colonne)
+        for i in  range(N):
+            new_tab[i][j] = transformee_col[i]
+    
+    return new_tab
