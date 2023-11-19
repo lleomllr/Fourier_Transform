@@ -12,17 +12,24 @@ Created on Sun Oct  1 17:31:40 2023
 #%%Passage de la Transformée de Fourier Discrète 1D de O(N^2) à O(Nlog2(N))
 
 import cmath
+import numpy as np
 
 def direct(tab):
     N = len(tab)
     if N <= 1: 
         return tab
+
+    new_tab = [0]*N
     
     paires = direct(tab[0::2])
     impaires =  direct(tab[1::2])
     
-    resultat = [cmath.exp(-2j*cmath.pi*k/N)*impaires[k] for k in range(N//2)]
-    return [paires[k] + resultat[k] for k in range(N//2)] + [paires[k] - resultat[k] for k in range(N//2)]
+    w = cmath.exp((-2j*cmath.pi)/N)
+    
+    for k in range(N//2):
+        new_tab[k] = paires[k] + w**k*impaires[k]
+        new_tab[k+N//2] = paires[k] - w**k*impaires[k]
+    return new_tab
 
 
 def inverse(tab):
@@ -35,6 +42,20 @@ def inverse(tab):
     
     resultat = [cmath.exp(2j*cmath.pi*k/N)*impaires[k] for k in range(N//2)]
     return [(paires[k] + resultat[k]) / 2 for k in range(N//2)] + [(paires[k] - resultat[k]) / 2 for k in range(N//2)]
+
+
+#Test avec matrice et comparaison avec la fft de la librairie numpy
+I = [1, 2, 3, 4,5,6,7,8]
+F = direct(I)
+print(F)
+print("\n")
+print(inverse(F))
+print("\n")
+
+J = np.fft.fft(I)
+print(J)
+print("\n\n\n\n\n")
+print(np.fft.ifft(J))
 
 
 #%%implémentation itérative basée sur l'algo de Cooley-Tuckey
