@@ -9,6 +9,7 @@ import TransformeeDeFourier.DFT1D as dft1d
 import TransformeeDeFourier.DFTD2D as dft2d
 import TransformeeDeFourier.FFT as fft
 import TransformeeDeFourier.FFT2D as FFT2D
+import TransformeeDeFourier.util as utl
 
 import numpy as np
 import cmath
