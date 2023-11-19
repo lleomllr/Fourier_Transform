@@ -38,3 +38,10 @@ def inverse(tab):
             #c'est pourquoi nous divisons le tout par 1/N
             new_tab[m] = new_tab[m] + (tab[n] * cmath.exp(2 * 1j * cmath.pi * m * n/N))/N;
     return new_tab
+
+#Test des transformées directe et inverse 1D sur un tableau à une dimension
+I=[1,2,3,4,5,6,7,8]
+F = direct(I)
+print(F)
+print("\n")
+print(inverse(F))
