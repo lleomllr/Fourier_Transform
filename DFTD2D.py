@@ -10,6 +10,7 @@ Created on Sun Oct  1 18:06:15 2023
 """DISCRETE FOURIER TRANSFORM 2D"""
 
 import TransformeeDeFourier.DFT1D as dft1d
+import numpy as np
 
 
 #%%Transformée de Fourier discrète 2D directe et inverse
@@ -61,3 +62,15 @@ def inverse(tab):
             new_tab[i][j] = transformee_col[i]
     
     return new_tab
+
+#Test 
+matrice_test = np.random.rand(4, 4)
+matrice_tfd2d_directe = direct(matrice_test)
+
+matrice_tfd2d_inverse = inverse(matrice_tfd2d_directe)
+
+print("Matrice originale:\n", matrice_test)
+print("Matrice après TFD2D inverse:\n", matrice_tfd2d_inverse)
+
+erreur = np.linalg.norm(matrice_test - matrice_tfd2d_inverse)
+print("Erreur entre la matrice originale et la récupérée par TFD2D inverse:", erreur)
