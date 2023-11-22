@@ -110,4 +110,56 @@ print("Matrice après TFD2D inverse:\n", matrice_tfd2d_inverse)
 erreur = np.linalg.norm(matrice_test - matrice_tfd2d_inverse)
 print("Erreur entre la matrice originale et la récupérée par TFD2D inverse:", erreur)
 
+#_______________________________________________________________________
+#Test de la Transformée de Fourier discrète 2D rapide directe et inverse
+chemin = '/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg'
+image = Image.open(chemin)
+image_gris = image.convert('L')
+data = np.array(image_gris)
 
+debut = time.time()
+resultat_fft2d = fft2d.direct(data)
+fin = time.time()
+
+start_time_ifft = time.time()
+resultat_ifft2d = fft2d.inverse(resultat_fft2d)
+end_time_ifft = time.time()
+
+temps_estime = fin - debut
+temps_ifft = end_time_ifft - start_time_ifft
+"""
+debut_np = time.time()
+resultat_fft2d_np = np.fft.fft2(data)
+fin_np = time.time()
+
+
+start_time_ifft_np = time.time()
+ifft2d_np_resultat = np.fft.ifft2(resultat_fft2d_np)
+end_time_ifft_np = time.time()
+
+
+tmps_estime = fin_np - debut_np
+temps_ifft_np = end_time_ifft_np - start_time_ifft_np
+"""
+
+plt.figure(figsize=(12,6))
+plt.subplot(1, 3, 1)
+plt.title("Image Originale")
+plt.imshow(data, cmap='gray')
+
+plt.subplot(1, 3, 2)
+plt.title("Après FFT2D")
+plt.imshow(np.log(np.abs(resultat_fft2d) + 1), cmap='gray')
+
+plt.subplot(1, 3, 3)
+plt.title("Après IFFT2d : Reconstruction")
+plt.imshow(np.real(resultat_ifft2d), cmap='gray')
+
+plt.show()
+
+print(f"Temps estimé pour la FFT2D : {temps_estime:.4f} seconds")
+print(f"Temps estimé pour la IFFT2D : {temps_ifft:.4f} seconds")
+"""
+print(f"Temps estimé pour la FFT2D : {tmps_estime:.4f} seconds")
+print(f"Temps estimé pour la IFFT2D : {temps_ifft_np:.4f} seconds")
+"""
