@@ -9,11 +9,44 @@ Created on Sat Oct  7 17:05:36 2023
 
 """Transformée de Fourier rapide 2D"""
 
-import cmath
 import TransformeeDeFourier.FFT as fft
+import numpy as np
 
 #%%Passage de la Transformée de Fourier Discrète 2D de O(N^4) à O(2 * N^2.log2(N))
+def direct(matrix):
+    colonnes = [fft.direct([ligne[i] for ligne in matrix]) for i in range(len(matrix[0]))]
 
+    transposee = list(map(list, zip(*colonnes)))
+    
+    lignes = [fft.direct(ligne) for ligne in transposee]
+    
+    return lignes
+
+def inverse(matrix):
+    
+    lignes = [fft.inverse(ligne) for ligne in matrix]
+
+    transposee = list(map(list, zip(*lignes)))
+    
+    colonnes = [fft.inverse(ligne) for ligne in transposee]
+    
+    resultat = list(map(list, zip(*colonnes)))
+    return resultat
+
+#Test avec matrice et comparaison avec la fft2d de la librairie numpy
+I = [[1, 2, 3, 4,5,6,7,8], [1, 2, 3, 4, 5, 6, 7, 8]]
+F = direct(I)
+print(F)
+print("\n")
+print(inverse(F))
+print("\n")
+
+J = np.fft.fft2(I)
+print(J)
+print("\n\n\n\n\n")
+print(np.fft.ifft2(J))
+
+"""
 def transpose(tab):
     #initialisation du nombre de lignes et de colonnes de la matrice
     I = len(tab)
@@ -56,4 +89,4 @@ def inverse(tab):
         tab[i] = fft.inverse(tab[i])
     tab = transpose(tab)
     return tab
-    
+  """  
