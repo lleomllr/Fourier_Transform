@@ -9,15 +9,10 @@ Created on Sun Oct  1 18:06:15 2023
 
 """DISCRETE FOURIER TRANSFORM 2D"""
 
-
-import cmath
-import numpy as np
-import matplotlib.image as img
 import TransformeeDeFourier.DFT1D as dft1d
 
 
 #%%Transformée de Fourier discrète 2D directe et inverse
-"""
 def transpose(tab):
     #initialisation du nombre de lignes et de colonnes de la matrice
     I = len(tab)
@@ -31,36 +26,6 @@ def transpose(tab):
             new_tab[j][i] = tab[i][j]
     return new_tab
 
-
-def direct(tab):
-    #initialisation du nombre de lignes et de colonnes de la matrice
-    I = len(tab)
-    J = len(tab[0])
-    
-    #parcours de chaque ligne de la matrice et application de la dft1d
-    for i in range(I):
-        tab[i] = dft1d.direct(tab[i])
-    tab = transpose(tab)
-    #parcours de chaque colonne (mtn lignes après transposition) de la matrice et application de la dft1d
-    for i in range(J):
-        tab[i] = dft1d.direct(tab[i])
-    tab = transpose(tab)
-    return tab
-
-def inverse(tab):
-    #initialisation du nombre de lignes et de colonnes de la matrice
-    I = len(tab)
-    J = len(tab[0])
-    #parcours de chaque ligne de la matrice et application de l'inverse de la dft1d
-    for i in range(I):
-        tab[i] = dft1d.inverse(tab[i])
-    tab = transpose(tab)
-    #parcours de chaque colonne (mtn lignes après transposition) de la matrice et application de l'inverse de la dft1d
-    for i in range(J):
-        tab[i] = dft1d.inverse(tab[i])
-    tab = transpose(tab)
-    return tab
-"""
 
 def direct(tab):
     N = len(tab)
