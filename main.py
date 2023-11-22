@@ -98,19 +98,16 @@ print(f"Temps estimé pour la IFFT : {temps_estime:.4f} seconds")
 
 
 ------------------------------------------------------------------------------------------------------------------
+#Test de la Transformée de Fourier discrète 2D directe et inverse 
+matrice_test = np.random.rand(4, 4)
+matrice_tfd2d_directe = dft2d.direct(matrice_test)
 
-#test de DFT2D directe et inverse
-image = Image.open('/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg').convert('L')
-pixels = np.array(image)
+matrice_tfd2d_inverse = dft2d.inverse(matrice_tfd2d_directe)
 
-resultat_dft2d = dft2d.direct(pixels)
+print("Matrice originale:\n", matrice_test)
+print("Matrice après TFD2D inverse:\n", matrice_tfd2d_inverse)
 
-magnitude = np.abs(resultat_dft2d)
+erreur = np.linalg.norm(matrice_test - matrice_tfd2d_inverse)
+print("Erreur entre la matrice originale et la récupérée par TFD2D inverse:", erreur)
 
-resultat_idft2d = dft2d.inverse(resultat_dft2d)
-
-new_pixels = np.clip(np.real(resultat_idft2d), 0, 255).astype(np.uint8)
-
-new_imag = Image.fromarray(new_pixels)
-new_imag.show()
 
