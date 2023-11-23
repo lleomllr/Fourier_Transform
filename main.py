@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 #Test de la Transformée discrète 1D directe et inverse
-adresse_image = '/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg'
+adresse_image = 'calimero.jpg'
 image = Image.open(adresse_image).convert('L')
 image_data = np.array(image)
 
@@ -61,7 +61,7 @@ print(f"Temps estimé pour la DFT Inverse : {temps_idft1d:.4f} seconds")
 ----------------------------------------------------------------------------------------------
 
 #Test de la Transformée de Fourier discrète 1D Rapide directe et inverse 
-chemin = '/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg'
+chemin = 'calimero.jpg'
 image = Image.open(chemin)
 image_gris = image.convert('L')
 data = np.array(image_gris)
@@ -112,7 +112,7 @@ print("Erreur entre la matrice originale et la récupérée par TFD2D inverse:",
 
 #_______________________________________________________________________
 #Test de la Transformée de Fourier discrète 2D rapide directe et inverse
-chemin = '/Users/meill/OneDrive/Bureau/L3/Maths/Projet/TransformeeDeFourier/calimero.jpg'
+chemin = 'calimero.jpg'
 image = Image.open(chemin)
 image_gris = image.convert('L')
 data = np.array(image_gris)
