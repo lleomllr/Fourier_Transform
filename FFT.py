@@ -14,38 +14,61 @@ Created on Sun Oct  1 17:31:40 2023
 import cmath
 import numpy as np
 
+#implémentation récursive
 def direct(tab):
     N = len(tab)
     if N <= 1: 
         return tab
-
+    
     new_tab = [0]*N
     
     paires = direct(tab[0::2])
     impaires =  direct(tab[1::2])
     
+    #racine de l'unité
     w = cmath.exp((-2j*cmath.pi)/N)
     
-    for k in range(N//2):
-        new_tab[k] = paires[k] + w**k*impaires[k]
-        new_tab[k+N//2] = paires[k] - w**k*impaires[k]
+    for u in range(N//2):
+        #somme de l'élem correspondant dans le tab paire et le produit 'w' élévé à la puissance k et l'elem correspondant dans le tab des impaires
+        new_tab[u] = paires[u] + w**u*impaires[u]
+        #différence des mêmes termes, ce qui reflète la symétrie de la FFT
+        new_tab[u+N//2] = paires[u] - w**u*impaires[u]
     return new_tab
-
 
 def inverse(tab):
     N = len(tab)
     if N <= 1: 
         return tab
     
-    paires = inverse(tab[0::2])
-    impaires = inverse(tab[1::2])
+    new_tab = [0]*N
     
-    resultat = [cmath.exp(2j*cmath.pi*k/N)*impaires[k] for k in range(N//2)]
-    return [(paires[k] + resultat[k]) / 2 for k in range(N//2)] + [(paires[k] - resultat[k]) / 2 for k in range(N//2)]
+    paires = inverse(tab[0::2])
+    impaires =  inverse(tab[1::2])
+    
+    #racine de l'unité
+    w = cmath.exp((2j*cmath.pi)/N)
+    
+    for u in range(N//2):
+        #somme de l'élem correspondant dans le tab paire et le produit 'w' élévé à la puissance k et l'elem correspondant dans le tab des impaires
+        new_tab[u] = (paires[u] + (w**u)*impaires[u])/2
+        #différence des mêmes termes, ce qui reflète la symétrie de la FFT
+        new_tab[u+N//2] = (paires[u] - w**u*impaires[u])/2
+    return new_tab
+
+
+def verifPuissance(tab): 
+    taille_actu = len(tab)
+    
+    taille_demand = 1
+    while taille_demand < taille_actu: 
+        taille_demand *=2
+        
+    tab.extend([0] * (taille_demand - taille_actu))
 
 
 #Test avec matrice et comparaison avec la fft de la librairie numpy
-I = [1, 2, 3, 4,5,6,7,8]
+I = [1, 2, 3, 4,5,6,7]
+verifPuissance(I)
 F = direct(I)
 print(F)
 print("\n")
